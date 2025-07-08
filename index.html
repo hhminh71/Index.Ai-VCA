@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-VCA | Cảng Hàng không Quốc tế Cần Thơ</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Be Vietnam Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: Lucide -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <style>
+        /* Áp dụng font chữ cho toàn bộ trang */
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #0a101f; /* Màu nền xanh đậm chủ đạo */
+            color: #e0e0e0; /* Màu chữ chính */
+        }
+        /* Hiệu ứng gradient cho hero section */
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(13, 37, 83, 0.7) 0%, rgba(10, 16, 31, 0) 60%);
+        }
+        /* Hiệu ứng glassmorphism cho card */
+        .glass-card {
+            background: rgba(20, 30, 58, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .hero-bg {
+             background-image: url('https://placehold.co/1920x1080/0a101f/e0e0e0?text=AI+IN+VCA');
+             background-size: cover;
+             background-position: center;
+             background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- ===== HEADER / NAVIGATION ===== -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-opacity-80 backdrop-blur-sm border-b border-gray-800" id="navbar">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-bold text-white">
+                    <span class="text-cyan-400">AI</span>-VCA
+                </a>
+
+                <!-- Navigation Links (Desktop) -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium">Trang chủ</a>
+                    <a href="#features" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium">Dự án AI</a>
+                    <a href="#vision" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium">Tầm nhìn</a>
+                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium">Liên hệ</a>
+                </nav>
+
+                <!-- Login Button (Desktop) -->
+                <a href="#" class="hidden md:block bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-5 py-2 rounded-lg transition-all duration-300">
+                    Đăng nhập
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90">
+            <nav class="flex flex-col items-center space-y-4 py-4">
+                <a href="#home" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">Trang chủ</a>
+                <a href="#features" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">Dự án AI</a>
+                <a href="#vision" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">Tầm nhìn</a>
+                <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">Liên hệ</a>
+                <a href="#" class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-5 py-2 rounded-lg transition-all duration-300 w-4/5 text-center">
+                    Đăng nhập
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===== HERO SECTION ===== -->
+        <section id="home" class="relative min-h-screen flex items-center justify-center hero-bg">
+            <div class="absolute inset-0 bg-black opacity-60"></div>
+            <div class="absolute inset-0 hero-gradient"></div>
+            <div class="relative z-10 text-center px-4">
+                <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
+                    <span class="text-cyan-400">CẢNG HÀNG KHÔNG QUỐC TẾ CẦN THƠ - </span> AI NỘI BỘ
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    Nền tảng ứng dụng Trí tuệ Nhân tạo nội bộ, tối ưu hóa vận hành và nâng cao hiệu quả tại Cảng Hàng không Quốc tế Cần Thơ.
+                </p>
+                <a href="#features" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform duration-300 hover:scale-105">
+                    Khám phá
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== FEATURES SECTION ===== -->
+        <section id="features" class="py-20 md:py-28">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Các Ứng Dụng AI Tiêu Biểu</h2>
+                    <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
+                        AI-VCA tập trung phát triển các giải pháp AI thực tiễn, giải quyết những quy trình nội bộ của VCA.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="glass-card p-8 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 bg-opacity-50 mx-auto mb-6">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Dự Án 1</h3>
+                        <p class="text-gray-400">Hệ thống ........</p>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="glass-card p-8 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 bg-opacity-50 mx-auto mb-6">
+                            <i data-lucide="luggage" class="w-8 h-8 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Dự Án 2</h3>
+                        <p class="text-gray-400">Hệ thống .........</p>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="glass-card p-8 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 bg-opacity-50 mx-auto mb-6">
+                            <i data-lucide="plane-takeoff" class="w-8 h-8 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Dự Án 3</h3>
+                        <p class="text-gray-400">Hệ thống .........</p>
+                    </div>
+                    <!-- Feature Card 4 -->
+                    <div class="glass-card p-8 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 bg-opacity-50 mx-auto mb-6">
+                            <i data-lucide="users" class="w-8 h-8 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Dự Án 4</h3>
+                        <p class="text-gray-400">Hệ thống .........</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== VISION SECTION ===== -->
+        <section id="vision" class="py-20 md:py-28 bg-gray-900 bg-opacity-40">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <!-- Image -->
+                    <div class="w-full md:w-1/2">
+                        <img src="https://placehold.co/600x400/1a202c/4fd1c5?text=AI-VCA" alt="Đội ngũ phát triển AI tại VCA" class="rounded-xl shadow-2xl w-full">
+                    </div>
+                    <!-- Text Content -->
+                    <div class="w-full md:w-1/2">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Tầm nhìn & Sứ mệnh</h2>
+                        <p class="text-gray-300 mb-4 text-lg">
+                            Trở thành cảng hàng không hiện đại trong việc ứng dụng sâu rộng Trí tuệ Nhân tạo.
+                        </p>
+                        <p class="text-gray-400 mb-6">
+                            Sứ mệnh của chúng tôi là không ngừng nghiên cứu và phát triển các giải pháp AI sáng tạo, nhằm mục tiêu:
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
+                                <span><strong class="text-white">An toàn tuyệt đối:</strong> Nâng cao các tiêu chuẩn an ninh, an toàn bay lên mức cao nhất.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
+                                <span><strong class="text-white">Hiệu quả vượt trội:</strong> Tối ưu hóa việc sử dụng nguồn lực, giảm chi phí và thời gian chờ đợi.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
+                                <span><strong class="text-white">Trải nghiệm xuất sắc:</strong> Mang đến sự hài lòng tối đa cho hành khách thông qua các dịch vụ thông minh.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- ===== FOOTER ===== -->
+    <footer id="contact" class="bg-gray-900 border-t border-gray-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div class="col-span-1 md:col-span-2">
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-cyan-400">AI</span>-VCA</h4>
+                    <p class="text-gray-400 max-w-md">Nền tảng nội bộ dành cho các dự án Trí tuệ Nhân tạo tại Cảng Hàng không Quốc tế Cần Thơ.</p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-4">Liên kết nhanh</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-cyan-400">Trang chủ</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-cyan-400">Dự án</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">Tài liệu</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">Đội ngũ</a></li>
+                    </ul>
+                </div>
+                <!-- Contact -->
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-4">Liên hệ nội bộ</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                            <span>lienhe@canthoairport.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="phone" class="w-4 h-4 mr-2"></i>
+                            <span>Ext: 1234</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p>&copy; 2024 Cảng Hàng không Quốc tế Cần Thơ. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript cho menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // JavaScript để thay đổi nền navbar khi cuộn chuột
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-gray-900');
+            } else {
+                navbar.classList.remove('bg-gray-900');
+            }
+        });
+
+        // Khởi tạo icons
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
