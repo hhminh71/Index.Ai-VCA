@@ -16,10 +16,14 @@
             overflow: hidden;
             transition: max-height 0.4s ease-out;
         }
-        /* Khi hover vào Nhánh chính, menu con sẽ xổ xuống */
-        .group:hover .sub-menu { 
+        /* Thay thế hover: Khi click có class is-open, menu con sẽ xổ xuống */
+        .group.is-open .sub-menu { 
             max-height: 500px; 
             transition: max-height 0.5s ease-in;
+        }
+        /* Xoay mũi tên khi mở */
+        .group.is-open .fa-chevron-down {
+            transform: rotate(180deg);
         }
         /* Hiệu ứng lún nút khi click */
         .btn-active:active {
@@ -62,12 +66,12 @@
         
         <!-- BẮT ĐẦU: NHÁNH CHÍNH 1 - QUY TRÌNH NỘI BỘ -->
         <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-default">
+            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
                 <span class="flex items-center font-semibold text-lg">
                     <i class="fas fa-gears w-8 text-blue-400 text-left"></i>
                     Quy trình nội bộ (SOP)
                 </span>
-                <i class="fas fa-chevron-down text-sm transition-transform group-hover:rotate-180 opacity-50"></i>
+                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
             </button>
             
             <!-- Danh sách nút con -->
@@ -84,12 +88,12 @@
 
         <!-- BẮT ĐẦU: NHÁNH CHÍNH 2 - TRIỂN KHAI VĂN BẢN -->
         <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-default">
+            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
                 <span class="flex items-center font-semibold text-lg">
                     <i class="fas fa-folder-tree w-8 text-emerald-400 text-left"></i>
                     Triển khai văn bản
                 </span>
-                <i class="fas fa-chevron-down text-sm transition-transform group-hover:rotate-180 opacity-50"></i>
+                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
             </button>
             
             <!-- Danh sách nút con -->
@@ -106,12 +110,12 @@
 
         <!-- BẮT ĐẦU: NHÁNH CHÍNH 3 - SƠ ĐỒ & MINDMAP -->
         <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-default">
+            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
                 <span class="flex items-center font-semibold text-lg">
                     <i class="fas fa-sitemap w-8 text-purple-400 text-left"></i>
                     Sơ đồ & Mindmap
                 </span>
-                <i class="fas fa-chevron-down text-sm transition-transform group-hover:rotate-180 opacity-50"></i>
+                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
             </button>
             
             <!-- Danh sách nút con -->
@@ -128,12 +132,12 @@
 
         <!-- BẮT ĐẦU: NHÁNH CHÍNH 4 - TÀI NGUYÊN & BIỂU MẪU -->
         <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-default">
+            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
                 <span class="flex items-center font-semibold text-lg">
                     <i class="fas fa-box-archive w-8 text-amber-400 text-left"></i>
                     Tài nguyên & Biểu mẫu
                 </span>
-                <i class="fas fa-chevron-down text-sm transition-transform group-hover:rotate-180 opacity-50"></i>
+                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
             </button>
             
             <!-- Danh sách nút con -->
@@ -143,6 +147,9 @@
                 </a>
                 <a href="#" target="_blank" class="block p-3 pl-6 hover:text-amber-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
                     <i class="fa-solid fa-server mr-3 text-xs opacity-70"></i>Hệ thống phần mềm nội bộ
+                </a>
+                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-amber-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
+                    <i class="fa-solid fa-book-open mr-3 text-xs opacity-70"></i>Tài liệu các khóa học
                 </a>
             </div>
         </div>
@@ -154,9 +161,34 @@
     <!-- BẮT ĐẦU: FOOTER -->
     <footer class="mt-auto pt-16 text-slate-500 text-[11px] uppercase tracking-widest font-medium text-center pb-6">
         <p class="mb-2">&copy; 2026 AI-VCA KNOWLEDGE BASE</p>
-        <p>Powered by <span class="text-blue-500">Cloudflare</span> & <span class="text-purple-500">Gemini</span></p>
+        <p>Phòng Tài chính - Kế hoạch</p>
     </footer>
     <!-- KẾT THÚC: FOOTER -->
 
+    <!-- Xử lý sự kiện Click mở menu con -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lấy tất cả các nút nhánh chính
+            const dropdownBtns = document.querySelectorAll('.group > button');
+            
+            dropdownBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const currentGroup = this.parentElement;
+                    
+                    // Nếu bạn muốn mở 1 nhánh thì tự động đóng nhánh khác, hãy bỏ comment đoạn code dưới:
+                    /*
+                    document.querySelectorAll('.group.is-open').forEach(group => {
+                        if (group !== currentGroup) {
+                            group.classList.remove('is-open');
+                        }
+                    });
+                    */
+
+                    // Bật/tắt trạng thái mở của nhánh được nhấn
+                    currentGroup.classList.toggle('is-open');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
