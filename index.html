@@ -1,194 +1,92 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-VCA Workspace</title>
-    <!-- Tích hợp Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tích hợp FontAwesome cho Icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCA Visualizer - Phòng TC-KH</title>
+<style>
+    /* --- CẤU HÌNH GIAO DIỆN VCA (ACV STYLE) --- */
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; display: flex; flex-direction: column;}
     
-    <style>
-        /* Hiệu ứng ẩn hiện menu con mượt mà */
-        .sub-menu { 
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out;
-        }
-        /* Thay thế hover: Khi click có class is-open, menu con sẽ xổ xuống */
-        .group.is-open .sub-menu { 
-            max-height: 500px; 
-            transition: max-height 0.5s ease-in;
-        }
-        /* Xoay mũi tên khi mở */
-        .group.is-open .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-        /* Hiệu ứng lún nút khi click */
-        .btn-active:active {
-            transform: scale(0.97);
-        }
-        /* Gradient viền cho nút (Nhánh chính) */
-        .gradient-border {
-            position: relative;
-            background: #1e293b; /* Nền nút tối */
-            border: 1px solid transparent;
-            background-clip: padding-box;
-        }
-        .gradient-border:hover {
-            background-image: linear-gradient(#1e293b, #1e293b), linear-gradient(to right, #3b82f6, #8b5cf6);
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-            box-shadow: 0 4px 20px -5px rgba(59, 130, 246, 0.3);
-        }
-    </style>
+    /* Header */
+    .vca-header {
+        background: #0056b3; /* Xanh ACV */
+        color: white;
+        padding: 12px 20px;
+        border-bottom: 4px solid #d4af37; /* Vàng Gold */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-shrink: 0;
+    }
+    .vca-top { font-size: 11px; text-transform: uppercase; opacity: 0.8; letter-spacing: 0.5px; }
+    .vca-title { font-size: 18px; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .vca-badge { font-size: 12px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; display: inline-block; margin-top: 5px;}
+
+    /* Main Container */
+    .main-area { flex-grow: 1; position: relative; overflow: hidden; }
+    
+    /* Mindmap container - Full Size */
+    .markmap { width: 100%; height: 100vh; }
+
+    /* Footer */
+    .vca-footer { 
+        background: #e9ecef; color: #555; text-align: center; 
+        padding: 5px; font-size: 11px; flex-shrink: 0; border-top: 1px solid #ddd;
+    }
+</style>
+<style>.markmap-node-text { font-family: 'Segoe UI'; font-size: 14px; fill: #333; }</style>
 </head>
-<body class="bg-[#0f172a] text-slate-200 min-h-screen flex flex-col items-center py-12 px-6">
+<body>
 
-    <!-- BẮT ĐẦU: PHẦN HEADER (Logo & Tiêu đề) -->
-    <div class="text-center mb-10 mt-4">
-        <div class="relative inline-block">
-            <!-- Vòng tròn Logo có viền sáng -->
-            <div class="w-24 h-24 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl text-white shadow-lg shadow-blue-500/30">
-                <i class="fa-solid fa-network-wired"></i>
-            </div>
-            <!-- Chấm xanh báo trạng thái Online -->
-            <span class="absolute bottom-4 right-0 w-6 h-6 bg-green-500 border-4 border-[#0f172a] rounded-full"></span>
-        </div>
-        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-2">VCA WORKSPACE</h1>
-        <p class="text-slate-400 italic text-sm">"Hệ thống Tài liệu nội bộ Cảng HKQT Cần Thơ"</p>
+    <div class="vca-header">
+        <div class="vca-top">Tổng công ty Cảng hàng không Việt Nam - CTCP</div>
+        <div class="vca-title">Cảng hàng không quốc tế Cần Thơ</div>
+        <div class="vca-badge">Phòng Tài chính - Kế hoạch | Triển khai văn bản</div>
     </div>
-    <!-- KẾT THÚC: PHẦN HEADER -->
 
-    <!-- BẮT ĐẦU: MAIN CONTENT (Các nút phân cấp) -->
-    <div id="link-container" class="w-full max-w-xl space-y-4">
-        
-        <!-- BẮT ĐẦU: NHÁNH CHÍNH 1 - QUY TRÌNH NỘI BỘ -->
-        <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
-                <span class="flex items-center font-semibold text-lg">
-                    <i class="fas fa-gears w-8 text-blue-400 text-left"></i>
-                    Quy trình nội bộ (SOP)
-                </span>
-                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
-            </button>
-            
-            <!-- Danh sách nút con -->
-            <div class="sub-menu mt-2 ml-5 border-l-2 border-slate-700/70">
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-blue-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-file-contract mr-3 text-xs opacity-70"></i>Quy trình Khai thác ga
-                </a>
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-blue-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-shield-halved mr-3 text-xs opacity-70"></i>Quy trình An ninh hàng không
-                </a>
-            </div>
+    <div class="main-area">
+        <div class="markmap">
+            <script type="text/template">
+# 🎯 BỘ GIÁ DVHK & PHI HK <br/>CẢNG HKQT CẦN THƠ <br/>(2025 vs 2026-2027)
+
+## 📚 1. Cơ sở áp dụng
+- **Năm 2025:** Quyết định số 948/QĐ-TCTCHKVN (Ký 28/02/2025)
+- **Năm 2026-2027:** Quyết định số 590/QĐ-TCTCHKVN (Ký 04/03/2026)
+
+## ✈️ 2. Dịch vụ Hàng không (Giữ nguyên)
+- **Phục vụ hành khách:**
+  - Quốc tế: 16 USD/khách
+  - Quốc nội: 90.909 VNĐ/khách
+- **Cất/Hạ cánh & Sân đậu:**
+  - Áp dụng chung theo khung giá Cảng Nhóm B.
+- **An ninh Hàng không:**
+  - Khách QT: 2 USD/khách | Khách NĐ: 18.181 VNĐ/khách
+  - Hàng hóa QT: 17 USD/tấn | Hàng hóa NĐ: 140.000 VNĐ/tấn
+
+## 🏪 3. Dịch vụ Phi Hàng không (Điểm nhấn & So sánh)
+- **🚗 Dịch vụ dừng, đỗ xe ô tô (QĐ 590/2026):**
+  - *10 phút đầu:* Từ 5.000 VNĐ (Xe <9 chỗ, tải <1.5T) đến 25.000 VNĐ (Xe >30 chỗ).
+  - *Thuê tháng (NV Cảng/DN):* Tối thiểu từ 100.000đ - 360.000đ/tháng tùy loại xe.
+- **🏢 Cho thuê mặt bằng:**
+  - Văn phòng: 300.000 VNĐ/m²/tháng (Giữ nguyên).
+  - Mặt bằng khác: 200.000 VNĐ/m²/tháng (Giữ nguyên).
+- **📺 Dịch vụ Quảng cáo (Thay đổi cấu trúc):**
+  - *Giữ nguyên giá cứng:* Panel, Hộp đèn, Màn hình LED, Tivi LCD 75", Decal.
+  - *Sự khác biệt 2026:* Các hạng mục quảng cáo nhỏ lẻ (Trưng bày SP, Standee, Tờ rơi, Tạp chí, Quảng cáo ghế ngồi) **đã bị lược bỏ** khỏi bảng giá cứng áp dụng cho Cần Thơ.
+  - *Lý do:* Chuyển sang cơ chế Cảng tự lập phương án giá tối thiểu.
+
+## ⚙️ 4. Định hướng triển khai (Phòng TC-KH)
+- **📝 Rà soát Hợp đồng:** Cập nhật và gia hạn các hợp đồng DVHK, Phi HK áp dụng chu kỳ giá 2026-2027.
+- **📊 Lập phương án giá mới (QUAN TRỌNG):** Chủ trì lập phương án giá tối thiểu cho các dịch vụ bị lược bỏ khỏi bảng giá cứng (Trưng bày SP, Standee, Tờ rơi, Tạp chí,...) trình TCT phê duyệt theo *Quy chế 448 (Điều 12)* và công văn hướng dẫn số 980.
+- **💰 Giám sát doanh thu:** Phối hợp các bộ phận liên quan đảm bảo thu đúng barem giá bãi đỗ xe và mặt bằng mới.
+            </script>
         </div>
-        <!-- KẾT THÚC: NHÁNH CHÍNH 1 -->
-
-        <!-- BẮT ĐẦU: NHÁNH CHÍNH 2 - TRIỂN KHAI VĂN BẢN -->
-        <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
-                <span class="flex items-center font-semibold text-lg">
-                    <i class="fas fa-folder-tree w-8 text-emerald-400 text-left"></i>
-                    Triển khai văn bản
-                </span>
-                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
-            </button>
-            
-            <!-- Danh sách nút con -->
-            <div class="sub-menu mt-2 ml-5 border-l-2 border-slate-700/70">
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-emerald-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-regular fa-file-lines mr-3 text-xs opacity-70"></i>Chỉ thị & Quyết định mới
-                </a>
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-emerald-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-bullhorn mr-3 text-xs opacity-70"></i>Kế hoạch phục vụ Cao điểm
-                </a>
-            </div>
-        </div>
-        <!-- KẾT THÚC: NHÁNH CHÍNH 2 -->
-
-        <!-- BẮT ĐẦU: NHÁNH CHÍNH 3 - SƠ ĐỒ & MINDMAP -->
-        <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
-                <span class="flex items-center font-semibold text-lg">
-                    <i class="fas fa-sitemap w-8 text-purple-400 text-left"></i>
-                    Sơ đồ & Mindmap
-                </span>
-                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
-            </button>
-            
-            <!-- Danh sách nút con -->
-            <div class="sub-menu mt-2 ml-5 border-l-2 border-slate-700/70">
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-purple-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-project-diagram mr-3 text-xs opacity-70"></i>Mindmap: Xử lý tình huống khẩn nguy
-                </a>
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-purple-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-users-viewfinder mr-3 text-xs opacity-70"></i>Sơ đồ Cơ cấu tổ chức
-                </a>
-            </div>
-        </div>
-        <!-- KẾT THÚC: NHÁNH CHÍNH 3 -->
-
-        <!-- BẮT ĐẦU: NHÁNH CHÍNH 4 - TÀI NGUYÊN & BIỂU MẪU -->
-        <div class="group relative">
-            <button class="w-full btn-active gradient-border flex items-center justify-between p-4 rounded-2xl transition-all duration-300 shadow-sm cursor-pointer">
-                <span class="flex items-center font-semibold text-lg">
-                    <i class="fas fa-box-archive w-8 text-amber-400 text-left"></i>
-                    Tài nguyên & Biểu mẫu
-                </span>
-                <i class="fas fa-chevron-down text-sm transition-transform duration-300 opacity-50"></i>
-            </button>
-            
-            <!-- Danh sách nút con -->
-            <div class="sub-menu mt-2 ml-5 border-l-2 border-slate-700/70">
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-amber-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-file-excel mr-3 text-xs opacity-70"></i>Kho biểu mẫu Hành chính
-                </a>
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-amber-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-server mr-3 text-xs opacity-70"></i>Hệ thống phần mềm nội bộ
-                </a>
-                <a href="#" target="_blank" class="block p-3 pl-6 hover:text-amber-400 transition-colors text-[15px] opacity-80 hover:opacity-100 font-medium">
-                    <i class="fa-solid fa-book-open mr-3 text-xs opacity-70"></i>Tài liệu các khóa học
-                </a>
-            </div>
-        </div>
-        <!-- KẾT THÚC: NHÁNH CHÍNH 4 -->
-
     </div>
-    <!-- KẾT THÚC: MAIN CONTENT -->
 
-    <!-- BẮT ĐẦU: FOOTER -->
-    <footer class="mt-auto pt-16 text-slate-500 text-[11px] uppercase tracking-widest font-medium text-center pb-6">
-        <p class="mb-2">&copy; 2026 AI-VCA KNOWLEDGE BASE</p>
-        <p>Phòng Tài chính - Kế hoạch</p>
-    </footer>
-    <!-- KẾT THÚC: FOOTER -->
+    <div class="vca-footer">
+        Hệ thống hỗ trợ triển khai văn bản nội bộ - VCA Smart Visualizer
+    </div>
 
-    <!-- Xử lý sự kiện Click mở menu con -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Lấy tất cả các nút nhánh chính
-            const dropdownBtns = document.querySelectorAll('.group > button');
-            
-            dropdownBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const currentGroup = this.parentElement;
-                    
-                    // Nếu bạn muốn mở 1 nhánh thì tự động đóng nhánh khác, hãy bỏ comment đoạn code dưới:
-                    /*
-                    document.querySelectorAll('.group.is-open').forEach(group => {
-                        if (group !== currentGroup) {
-                            group.classList.remove('is-open');
-                        }
-                    });
-                    */
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.15.4"></script>
 
-                    // Bật/tắt trạng thái mở của nhánh được nhấn
-                    currentGroup.classList.toggle('is-open');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
