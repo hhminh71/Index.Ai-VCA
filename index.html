@@ -6,25 +6,29 @@
   <style>
     /* Reset CSS cơ bản */
     * { box-sizing: border-box; }
-    body { 
+body { 
       margin: 0; 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       display: flex; 
+      /* Hỗ trợ chiều cao động (Dynamic Viewport Height) để không bị thanh URL che lấp */
       height: 100vh; 
+      height: 100dvh; 
       overflow: hidden; 
       background-color: #ffffff;
     }
 
-    /* Cột bên trái: Thanh Menu */
     .sidebar { 
       width: 300px; 
       background: #f8f9fa; 
       border-right: 1px solid #dadce0; 
       padding: 20px; 
       overflow-y: auto; 
+      /* Bắt buộc phải có dòng này để vuốt cuộn mượt mà trên Tablet/Mobile */
+      -webkit-overflow-scrolling: touch; 
+      /* Đảm bảo sidebar không bị bóp méo khi màn hình nhỏ */
+      flex-shrink: 0; 
     }
-    
-    .sidebar-title { 
+   .sidebar-title { 
       font-size: 18px; 
       font-weight: 600; 
       color: #202124; 
@@ -33,6 +37,7 @@
       border-bottom: 2px solid #1a73e8;
     }
 
+    
     /* Tùy biến cây thư mục */
     ul.tree { 
       list-style-type: none; 
