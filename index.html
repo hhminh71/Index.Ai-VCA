@@ -1,28 +1,35 @@
-<div style="max-width: 600px; margin: 40px auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: Arial, sans-serif;">
+<!-- Bổ sung thư viện Marked.js để hiển thị đẹp định dạng bảng biểu, in đậm của Gemini -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<div style="max-width: 700px; margin: 40px auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: Arial, sans-serif;">
   <h3 style="margin-top: 0; color: #333; text-align: center;">Hệ thống Rà soát Hồ sơ AI</h3>
-  <p style="color: #666; font-size: 14px; text-align: center; margin-bottom: 20px;">Hỗ trợ định dạng PDF. Giới hạn dung lượng: < 15MB</p>
+  <p style="color: #666; font-size: 14px; text-align: center; margin-bottom: 20px;">Hỗ trợ: PDF, DOCX. Giới hạn: < 15MB</p>
   
   <label style="font-weight: bold; display: block; margin-bottom: 5px;">Email nhận kết quả:</label>
-  <input type="email" id="emailInput" placeholder="Nhập email của bạn..." required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  <input type="email" id="emailInput" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
 
   <label style="font-weight: bold; display: block; margin-bottom: 5px;">Phân loại tài liệu:</label>
   <select id="loaiHoSo" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     <option value="Hồ sơ nghiệm thu thi công">Hồ sơ nghiệm thu thi công</option>
     <option value="Bản vẽ kỹ thuật/Biện pháp thi công">Bản vẽ kỹ thuật/Biện pháp thi công</option>
     <option value="Hợp đồng kinh tế">Hợp đồng kinh tế</option>
-    <option value="Dự toán">Dự toán/Khối lượng</option>
+    <option value="Dự toán/Khối lượng">Dự toán/Khối lượng</option>
   </select>
 
- <label style="font-weight: bold; display: block; margin-bottom: 5px;">Tải file (PDF hoặc Word):</label>
+  <label style="font-weight: bold; display: block; margin-bottom: 5px;">Tải file bản scan (PDF hoặc Word):</label>
   <input type="file" id="fileInput" accept=".pdf, .docx, .doc, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px dashed #ccc; border-radius: 4px; box-sizing: border-box; background: #f9f9f9;">
 
   <button onclick="uploadToGemini()" id="submitBtn" style="width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">Bắt đầu kiểm tra</button>
   
   <div id="statusMessage" style="margin-top: 20px; font-size: 15px; text-align: center; line-height: 1.5;"></div>
+
+  <!-- Đây là vùng không gian sẽ hiển thị báo cáo y như chat với Gemini -->
+  <div id="reportContainer" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 5px solid #28a745; border-radius: 5px; text-align: left; overflow-x: auto; line-height: 1.6;">
+  </div>
 </div>
 
 <script>
-  // Dán URL Web App bạn copy ở Phần 3 vào đây
+  // DÁN URL WEB APP CỦA BẠN VÀO ĐÂY:
   const GAS_URL = "https://script.google.com/macros/s/AKfycbztXWF79JSMvJL7uL0oLLfSr6XM9AZ5xqSk8eaMysTVHGzL1gDrD_OJmvhjGFfJxpk/exec"; 
 
   function uploadToGemini() {
@@ -31,27 +38,24 @@
     const loaiHoSo = document.getElementById('loaiHoSo').value;
     const statusMsg = document.getElementById('statusMessage');
     const btn = document.getElementById('submitBtn');
+    const reportDiv = document.getElementById('reportContainer'); // Lấy div báo cáo
 
     if (!fileInput.files.length || !email) {
-      alert("Vui lòng điền đủ email và đính kèm file PDF!");
+      alert("Vui lòng điền đủ email và đính kèm file!");
       return;
     }
 
     const file = fileInput.files[0];
-    
-    // Hệ thống tự động lấy định dạng file (ví dụ: application/pdf hoặc application/vnd.openxmlformats-...)
+    if (file.size > 15 * 1024 * 1024) {
+      alert("File quá lớn! Vui lòng nén file xuống dưới 15MB.");
+      return;
+    }
+
     let mimeType = file.type;
-    
-    // Mẹo nhỏ: Đề phòng trình duyệt không nhận diện được file DOCX
     if (!mimeType) {
       if (file.name.endsWith('.docx')) mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
       else if (file.name.endsWith('.doc')) mimeType = 'application/msword';
       else if (file.name.endsWith('.pdf')) mimeType = 'application/pdf';
-    }
-
-    if (!mimeType) {
-      alert("Không nhận diện được định dạng file, vui lòng thử lại!");
-      return;
     }
 
     const reader = new FileReader();
@@ -60,31 +64,35 @@
       const base64Data = e.target.result;
       
       statusMsg.style.color = "#0056b3";
-      statusMsg.innerHTML = "⏳ Đang phân tích hồ sơ qua Gemini 2.5...";
+      statusMsg.innerHTML = "⏳ Hệ thống AI đang phân tích toàn bộ tài liệu...<br><small>Quá trình này có thể mất 15-30 giây.</small>";
       btn.disabled = true;
+      btn.style.background = "#ccc";
+      reportDiv.style.display = "none"; // Ẩn báo cáo cũ (nếu có) khi chạy file mới
 
-      // Đóng gói thêm biến mimeType vào payload để gửi đi
       const payload = {
         email: email,
         loaiHoSo: loaiHoSo,
         fileName: file.name,
-        mimeType: mimeType, 
+        mimeType: mimeType,
         fileBase64: base64Data
       };
 
-      // Sử dụng text/plain để vượt qua bài toán CORS của Google Apps Script
       fetch(GAS_URL, {
         method: "POST",
         body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        }
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
       })
       .then(response => response.json())
       .then(data => {
         if (data.status === "success") {
           statusMsg.style.color = "green";
-          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="color: #d9534f; text-decoration: underline;">Nhấn vào đây để xem Báo cáo QC</a><br><small>Hệ thống cũng đã gửi 1 bản sao qua email của bạn.</small>`;
+          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br>Hệ thống đã gửi 1 bản lưu (Google Docs) qua email của bạn.<br><a href="${data.link}" target="_blank" style="font-size: 13px; text-decoration: underline;">Hoặc tải File Backup tại đây</a>`;
+          
+          // HIỂN THỊ BÁO CÁO TRỰC TIẾP LÊN WEB
+          reportDiv.style.display = "block";
+          // Thư viện marked.parse() sẽ biến text thô thành bảng biểu và chữ in đậm
+          reportDiv.innerHTML = marked.parse(data.report);
+
         } else {
           statusMsg.style.color = "red";
           statusMsg.innerText = "❌ Có lỗi: " + data.message;
@@ -103,3 +111,10 @@
     reader.readAsDataURL(file);
   }
 </script>
+
+<!-- Thêm một xíu CSS để bảng biểu nhìn chuyên nghiệp hơn -->
+<style>
+  #reportContainer table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
+  #reportContainer th, #reportContainer td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  #reportContainer th { background-color: #e9ecef; font-weight: bold; }
+</style>
