@@ -1,12 +1,7 @@
 <!-- Bổ sung thư viện Marked.js để hiển thị đẹp định dạng bảng biểu, in đậm của Gemini -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- Nút tải ảnh -->
-<div style="text-align: center; margin-top: 15px;">
-  <button id="downloadBtn" onclick="downloadReportAsImage()" style="display: none; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-    ⬇ Tải báo cáo dưới dạng ảnh (PNG)
-  </button>
-</div>
+
 
 <div style="max-width: 700px; margin: 40px auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: Arial, sans-serif;">
   <h3 style="margin-top: 0; color: #333; text-align: center;">Hệ thống Rà soát Hồ sơ AI</h3>
@@ -34,7 +29,12 @@
   <div id="reportContainer" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 5px solid #28a745; border-radius: 5px; text-align: left; overflow-x: auto; line-height: 1.6;">
   </div>
 </div>
-
+<!-- Nút tải ảnh -->
+<div style="text-align: center; margin-top: 15px;">
+  <button id="downloadBtn" onclick="downloadReportAsImage()" style="display: none; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+    ⬇ Tải báo cáo dưới dạng ảnh (PNG)
+  </button>
+</div>
 <script>
   // DÁN URL WEB APP CỦA BẠN VÀO ĐÂY:
   const GAS_URL = "https://script.google.com/macros/s/AKfycbztXWF79JSMvJL7uL0oLLfSr6XM9AZ5xqSk8eaMysTVHGzL1gDrD_OJmvhjGFfJxpk/exec"; 
@@ -112,7 +112,7 @@
       .then(data => {
         if (data.status === "success") {
           statusMsg.style.color = "green";
-          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="text-decoration: underline;">Tải File Backup tại đây</a>`;
+          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="text-decoration: underline;"></a>`;
 
           // HIỂN THỊ BÁO CÁO TRỰC TIẾP LÊN WEB
           reportDiv.style.display = "block";
