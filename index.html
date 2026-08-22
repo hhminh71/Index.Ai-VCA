@@ -1,158 +1,172 @@
-<!-- Bổ sung thư viện Marked.js để hiển thị đẹp định dạng bảng biểu, in đậm của Gemini -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống Rà soát Hồ sơ AI</title>
+<!-- Bổ sung thư viện hiển thị và chụp ảnh -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
+  .container { max-width: 750px; margin: auto; padding: 25px; border-radius: 8px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+  label { font-weight: bold; display: block; margin-bottom: 5px; margin-top: 15px;}
+  input, select, button { width: 100%; padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+  button { background: #0056b3; color: white; border: none; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 15px;}
+  button:disabled { background: #ccc !important; cursor: not-allowed; }
+  #reportContainer { display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 5px solid #28a745; line-height: 1.6; }
+  #reportContainer table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
+  #reportContainer th, #reportContainer td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  #reportContainer th { background-color: #e9ecef; }
+  #reportContainer hr { display: none; } /* Chống hiển thị lỗi vạch kẻ */
+</style>
+</head>
+<body>
 
-
-<div style="max-width: 700px; margin: 40px auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: Arial, sans-serif;">
-  <h3 style="margin-top: 0; color: #333; text-align: center;">Hệ thống Rà soát Hồ sơ AI</h3>
-  <p style="color: #666; font-size: 14px; text-align: center; margin-bottom: 20px;">Hỗ trợ: PDF, DOCX. Giới hạn: < 15MB</p>
+<div class="container">
+  <h3 style="margin-top: 0; text-align: center;">Hệ thống Rà soát Đa Hồ Sơ AI</h3>
+  <p style="color: #666; font-size: 14px; text-align: center;">Hỗ trợ: PDF, DOCX (Chọn nhiều file cùng lúc). Tổng dung lượng < 25MB</p>
   
-  <label style="font-weight: bold; display: block; margin-bottom: 5px;">Email nhận kết quả:</label>
-  <input type="email" id="emailInput" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  <label>Email nhận thông báo:</label>
+  <input type="email" id="emailInput" value="hhminh71@gmail.com">
 
-  <label style="font-weight: bold; display: block; margin-bottom: 5px;">Phân loại tài liệu:</label>
-  <select id="loaiHoSo" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  <label>Phân loại tài liệu:</label>
+  <select id="loaiHoSo">
     <option value="Hồ sơ nghiệm thu thi công">Hồ sơ nghiệm thu thi công</option>
     <option value="Bản vẽ kỹ thuật/Biện pháp thi công">Bản vẽ kỹ thuật/Biện pháp thi công</option>
     <option value="Hợp đồng kinh tế">Hợp đồng kinh tế</option>
     <option value="Dự toán/Khối lượng">Dự toán/Khối lượng</option>
   </select>
 
-  <label style="font-weight: bold; display: block; margin-bottom: 5px;">Tải file bản scan (PDF hoặc Word):</label>
-  <input type="file" id="fileInput" accept=".pdf, .docx, .doc, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px dashed #ccc; border-radius: 4px; box-sizing: border-box; background: #f9f9f9;">
+  <!-- Đã thêm thuộc tính MULTIPLE vào đây -->
+  <label>Tải file bản scan (Có thể quét chọn nhiều file):</label>
+  <input type="file" id="fileInput" multiple accept=".pdf, .docx, .doc, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
 
-  <button onclick="uploadToGemini()" id="submitBtn" style="width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">Bắt đầu kiểm tra</button>
+  <button onclick="uploadToGemini()" id="submitBtn">Bắt đầu đối chiếu & kiểm tra</button>
   
-  <div id="statusMessage" style="margin-top: 20px; font-size: 15px; text-align: center; line-height: 1.5;"></div>
+  <div id="statusMessage" style="margin-top: 20px; text-align: center;"></div>
 
-  <!-- Đây là vùng không gian sẽ hiển thị báo cáo y như chat với Gemini -->
-  <div id="reportContainer" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 5px solid #28a745; border-radius: 5px; text-align: left; overflow-x: auto; line-height: 1.6;">
+  <div id="reportWrapper" style="display: none;">
+      <div style="text-align: right; margin-top: 10px;">
+         <button id="downloadBtn" onclick="downloadReportAsImage()" style="width: auto; background: #28a745; padding: 8px 15px; font-size: 14px;">⬇ Tải Ảnh Báo Cáo</button>
+      </div>
+      <div id="reportContainer"></div>
   </div>
 </div>
-<!-- Nút tải ảnh -->
-<div style="text-align: center; margin-top: 15px;">
-  <button id="downloadBtn" onclick="downloadReportAsImage()" style="display: none; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-    ⬇ Tải báo cáo dưới dạng ảnh (PNG)
-  </button>
-</div>
+
 <script>
-  // DÁN URL WEB APP CỦA BẠN VÀO ĐÂY:
+  // QUAN TRỌNG: DÁN URL WEB APP MỚI CỦA BẠN VÀO ĐÂY:
   const GAS_URL = "https://script.google.com/macros/s/AKfycbztXWF79JSMvJL7uL0oLLfSr6XM9AZ5xqSk8eaMysTVHGzL1gDrD_OJmvhjGFfJxpk/exec"; 
-  
-  
-  function downloadReportAsImage() {
-    const reportDiv = document.getElementById('reportContainer');
-    
-    // Sử dụng html2canvas để chụp màn hình vùng báo cáo
-    html2canvas(reportDiv, {
-      backgroundColor: "#ffffff", // Màu nền ảnh là trắng
-      scale: 2 // Độ phân giải cao gấp đôi để chữ sắc nét
-    }).then(canvas => {
-      // Tạo một link ẩn để tự động tải file về
-      const link = document.createElement('a');
-      link.download = 'Bao-cao-QC.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+
+  // Hàm phụ trợ đọc file thành base64 bất đồng bộ
+  function readFileAsBase64(file) {
+      return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result.split(',')[1]); // Chỉ lấy phần chuỗi dữ liệu
+          reader.readAsDataURL(file);
+      });
   }
 
-
-  
-  function uploadToGemini() {
+  async function uploadToGemini() {
     const fileInput = document.getElementById('fileInput');
-    const email = document.getElementById('emailInput').value;
     const loaiHoSo = document.getElementById('loaiHoSo').value;
     const statusMsg = document.getElementById('statusMessage');
     const btn = document.getElementById('submitBtn');
-    const reportDiv = document.getElementById('reportContainer'); // Lấy div báo cáo
+    const reportWrapper = document.getElementById('reportWrapper');
+    const reportDiv = document.getElementById('reportContainer');
 
-    if (!fileInput.files.length || !email) {
-      alert("Vui lòng điền đủ email và đính kèm file!");
+    const files = fileInput.files;
+    if (files.length === 0) {
+      alert("Vui lòng đính kèm ít nhất 1 tài liệu!");
       return;
     }
 
-    const file = fileInput.files[0];
-    if (file.size > 15 * 1024 * 1024) {
-      alert("File quá lớn! Vui lòng nén file xuống dưới 15MB.");
+    // Kiểm tra tổng dung lượng các file
+    let totalSize = 0;
+    for (let i = 0; i < files.length; i++) totalSize += files[i].size;
+    if (totalSize > 25 * 1024 * 1024) {
+      alert("Tổng dung lượng các file vượt quá 25MB. Vui lòng giảm bớt file!");
       return;
     }
 
-    let mimeType = file.type;
-    if (!mimeType) {
-      if (file.name.endsWith('.docx')) mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      else if (file.name.endsWith('.doc')) mimeType = 'application/msword';
-      else if (file.name.endsWith('.pdf')) mimeType = 'application/pdf';
-    }
+    statusMsg.style.color = "#0056b3";
+    statusMsg.innerHTML = "⏳ Đang chuẩn bị dữ liệu (" + files.length + " file)...";
+    btn.disabled = true;
+    reportWrapper.style.display = "none"; 
 
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      const base64Data = e.target.result;
-      
-      statusMsg.style.color = "#0056b3";
-      statusMsg.innerHTML = "⏳ Hệ thống AI đang phân tích toàn bộ tài liệu...<br><small>Quá trình này có thể mất 15-30 giây.</small>";
-      btn.disabled = true;
-      btn.style.background = "#ccc";
-      reportDiv.style.display = "none"; // Ẩn báo cáo cũ (nếu có) khi chạy file mới
-
-      const payload = {
-        email: email,
-        loaiHoSo: loaiHoSo,
-        fileName: file.name,
-        mimeType: mimeType,
-        fileBase64: base64Data
-      };
-
-      fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "text/plain;charset=utf-8" }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "success") {
-          statusMsg.style.color = "green";
-          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="text-decoration: underline;"></a>`;
-
-          // HIỂN THỊ BÁO CÁO TRỰC TIẾP LÊN WEB
-          reportDiv.style.display = "block";
-          document.getElementById('downloadBtn').style.display = "inline-block"; // Hiện nút tải ảnh
-          reportDiv.innerHTML = marked.parse(data.report);
-
-
-
-          
-          // HIỂN THỊ BÁO CÁO VỚI BẪY LỖI
-          reportDiv.style.display = "block";
-          
-          if (data.report) {
-            reportDiv.innerHTML = marked.parse(data.report);
-          } else {
-            reportDiv.innerHTML = "<em>Hệ thống đã rà soát xong nhưng không nhận được nội dung hiển thị trực tiếp. Vui lòng kiểm tra file Backup ở link trên.</em>";
-          }
-
-        } else {
-          statusMsg.style.color = "red";
-          statusMsg.innerText = "❌ Có lỗi: " + data.message;
+    // Đóng gói mảng danh sách file
+    let fileList = [];
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i];
+        let mimeType = file.type;
+        if (!mimeType) {
+            if (file.name.endsWith('.docx')) mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            else if (file.name.endsWith('.pdf')) mimeType = 'application/pdf';
         }
-        btn.disabled = false;
-        btn.style.background = "#0056b3";
-      })
-      .catch(error => {
-        statusMsg.style.color = "red";
-        statusMsg.innerText = "❌ Lỗi kết nối máy chủ: " + error.message;
-        btn.disabled = false;
-        btn.style.background = "#0056b3";
-      });
+        
+        let base64 = await readFileAsBase64(file);
+        fileList.push({
+            name: file.name,
+            mimeType: mimeType,
+            data: base64
+        });
+    }
+
+    statusMsg.innerHTML = "🧠 Hệ thống AI đang đọc và đối chiếu nhiều tài liệu...<br><small>Quá trình này mất khoảng 20-40 giây tùy số lượng file.</small>";
+
+    const payload = {
+        loaiHoSo: loaiHoSo,
+        fileList: fileList // Gửi nguyên mảng file đi
     };
 
-    reader.readAsDataURL(file);
+    // Bộ ngắt Timeout 120 giây (2 phút) để chờ xử lý nhiều file
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 120000);
+
+    fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        signal: controller.signal
+    })
+    .then(response => {
+        clearTimeout(id);
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === "success") {
+          statusMsg.style.color = "green";
+          statusMsg.innerHTML = `✅ <b>Phân tích hoàn tất!</b>`;
+          
+          reportWrapper.style.display = "block";
+          reportDiv.innerHTML = marked.parse(data.report);
+        } else {
+          statusMsg.style.color = "red";
+          statusMsg.innerText = "❌ Có lỗi từ máy chủ: " + data.message;
+        }
+        btn.disabled = false;
+    })
+    .catch(error => {
+        statusMsg.style.color = "red";
+        statusMsg.innerText = error.name === 'AbortError' ? "❌ Quá thời gian chờ (Timeout). Hãy thử giảm bớt số lượng file tải lên." : "❌ Lỗi: " + error.message;
+        btn.disabled = false;
+    });
+  }
+
+  // Hàm tải ảnh báo cáo
+  function downloadReportAsImage() {
+    const reportDiv = document.getElementById('reportContainer');
+    document.getElementById('downloadBtn').innerText = "⏳ Đang tạo ảnh...";
+    
+    html2canvas(reportDiv, { backgroundColor: "#ffffff", scale: 2 }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'Bao_Cao_Doi_Chieu.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      document.getElementById('downloadBtn').innerText = "⬇ Tải Ảnh Báo Cáo";
+    });
   }
 </script>
 
-<!-- Thêm một xíu CSS để bảng biểu nhìn chuyên nghiệp hơn -->
-<style>
-  #reportContainer table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
-  #reportContainer th, #reportContainer td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-  #reportContainer th { background-color: #e9ecef; font-weight: bold; }
-</style>
+</body>
+</html>
