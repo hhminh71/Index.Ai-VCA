@@ -139,7 +139,21 @@
           statusMsg.innerHTML = `✅ <b>Phân tích hoàn tất!</b>`;
           
           reportWrapper.style.display = "block";
-          reportDiv.innerHTML = marked.parse(data.report);
+          
+          // BẪY LỖI: Kiểm tra xem GAS có thực sự gửi nội dung báo cáo về không
+          if (data.report) {
+             try {
+                 // Cố gắng định dạng bảng biểu cho đẹp
+                 reportDiv.innerHTML = marked.parse(data.report);
+             } catch (err) {
+                 // Nếu thư viện lỗi, in thẳng chữ thô ra màn hình
+                 reportDiv.innerText = data.report; 
+             }
+          } else {
+             reportDiv.innerHTML = `<span style="color:red;">Lỗi: Trình duyệt nhận được tín hiệu thành công nhưng nội dung báo cáo bị trống. Vui lòng kiểm tra lại code Google Apps Script (hãy chắc chắn bạn đã Deploy thành Phiên bản mới).</span>`;
+             console.log("Dữ liệu lỗi nhận được:", data);
+          }
+          
         } else {
           statusMsg.style.color = "red";
           statusMsg.innerText = "❌ Có lỗi từ máy chủ: " + data.message;
