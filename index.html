@@ -113,6 +113,14 @@
         if (data.status === "success") {
           statusMsg.style.color = "green";
           statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="text-decoration: underline;">Tải File Backup tại đây</a>`;
+
+          // HIỂN THỊ BÁO CÁO TRỰC TIẾP LÊN WEB
+          reportDiv.style.display = "block";
+          document.getElementById('downloadBtn').style.display = "inline-block"; // Hiện nút tải ảnh
+          reportDiv.innerHTML = marked.parse(data.report);
+
+
+
           
           // HIỂN THỊ BÁO CÁO VỚI BẪY LỖI
           reportDiv.style.display = "block";
