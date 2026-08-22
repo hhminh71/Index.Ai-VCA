@@ -86,12 +86,16 @@
       .then(data => {
         if (data.status === "success") {
           statusMsg.style.color = "green";
-          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br>Hệ thống đã gửi 1 bản lưu (Google Docs) qua email của bạn.<br><a href="${data.link}" target="_blank" style="font-size: 13px; text-decoration: underline;">Hoặc tải File Backup tại đây</a>`;
+          statusMsg.innerHTML = `✅ <b>Hoàn tất!</b> <br><a href="${data.link}" target="_blank" style="text-decoration: underline;">Tải File Backup tại đây</a>`;
           
-          // HIỂN THỊ BÁO CÁO TRỰC TIẾP LÊN WEB
+          // HIỂN THỊ BÁO CÁO VỚI BẪY LỖI
           reportDiv.style.display = "block";
-          // Thư viện marked.parse() sẽ biến text thô thành bảng biểu và chữ in đậm
-          reportDiv.innerHTML = marked.parse(data.report);
+          
+          if (data.report) {
+            reportDiv.innerHTML = marked.parse(data.report);
+          } else {
+            reportDiv.innerHTML = "<em>Hệ thống đã rà soát xong nhưng không nhận được nội dung hiển thị trực tiếp. Vui lòng kiểm tra file Backup ở link trên.</em>";
+          }
 
         } else {
           statusMsg.style.color = "red";
