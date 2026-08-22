@@ -1,20 +1,115 @@
-<div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
-  <h2 style="color: #1a73e8;">Cổng Rà Soát Hồ Sơ AI (Nội Bộ)</h2>
-  <p>Hệ thống đã được nâng cấp lên lõi xử lý trực tiếp của Google Gemini để đảm bảo không bị giới hạn dung lượng và số lượng file.</p>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống Rà soát Hồ sơ AI - Cảng HKQT Cần Thơ</title>
+<style>
+  /* Cài đặt chung */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+  }
   
-  <div style="margin: 30px auto; padding: 20px; max-width: 500px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; text-align: left;">
-     <h4 style="margin-top: 0;">Hướng dẫn sử dụng:</h4>
-     <ol style="line-height: 1.6;">
-        <li>Bấm vào nút bên dưới để mở Trợ lý rà soát.</li>
-        <li>Đăng nhập bằng tài khoản Google (nếu được yêu cầu).</li>
-        <li>Bấm dấu <b>+</b> để tải các file PDF/Word hợp đồng lên.</li>
-        <li>AI đã được cài đặt sẵn chuyên môn, tự động đối chiếu và trả kết quả!</li>
-     </ol>
+  /* Cấu hình Header Banner Xanh Dương (Mô phỏng 100% theo ảnh của bạn) */
+  .header-banner {
+    background-color: #0056b3; /* Màu xanh dương chuẩn doanh nghiệp */
+    color: white;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .header-banner .corp-name {
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  
+  .header-banner .airport-name {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  
+  .header-banner .department {
+    font-size: 13px;
+    color: #e0e0e0; /* Chữ màu xám trắng để phân cấp thông tin */
+  }
+
+  /* Khung nội dung chính nằm giữa trang */
+  .main-content {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 35px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+
+  /* Nút bấm lớn chuyển hướng qua Gemini */
+  .btn-gemini {
+    display: inline-block;
+    padding: 15px 35px;
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s;
+    margin-top: 15px;
+  }
+  
+  .btn-gemini:hover {
+    background-color: #004494; /* Hiệu ứng đổi màu khi rê chuột */
+  }
+
+  /* Khung hướng dẫn sử dụng */
+  .guide-box {
+    background-color: #f8f9fa; 
+    border-left: 4px solid #28a745; /* Vạch xanh lá cây trang trí */
+    padding: 15px 20px; 
+    text-align: left; 
+    margin: 25px 0;
+  }
+</style>
+</head>
+<body>
+
+  <!-- PHẦN 1: HEADER XANH DƯƠNG -->
+  <div class="header-banner">
+    <div class="corp-name">TỔNG CÔNG TY CẢNG HÀNG KHÔNG VIỆT NAM - CTCP</div>
+    <div class="airport-name">CẢNG HÀNG KHÔNG QUỐC TẾ CẦN THƠ</div>
+    <div class="department">Phòng Tài chính - Kế hoạch | Triển khai văn bản</div>
   </div>
 
-  <!-- Thay cái link dài ngoằng của bạn vào href bên dưới -->
-  <a href="https://gemini.google.com/gem/1w4FL_e_wAWF5E-EV7WquoqJGQpF9kw25?usp=sharing" target="_blank" 
-     style="display: inline-block; padding: 15px 30px; background-color: #0056b3; color: white; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-     🚀 MỞ TRỢ LÝ RÀ SOÁT HỒ SƠ NGAY
-  </a>
-</div>
+  <!-- PHẦN 2: NỘI DUNG CHÍNH (LANDING PAGE) -->
+  <div class="main-content">
+    <h2 style="color: #333; margin-top: 0;">Cổng Rà Soát Hồ Sơ Nội Bộ (AI)</h2>
+    <p style="color: #555; font-size: 15px; line-height: 1.6; text-align: left;">
+      Hệ thống đã được nâng cấp lên lõi xử lý trực tiếp của Google để đảm bảo năng lực phân tích tệp dữ liệu lớn (Hợp đồng, Bảng tính, Bản vẽ thi công).
+    </p>
+    
+    <div class="guide-box">
+       <h4 style="margin-top: 0; color: #333;">Quy trình thực hiện:</h4>
+       <ol style="margin-bottom: 0; padding-left: 20px; color: #555; line-height: 1.6;">
+          <li>Bấm vào nút bên dưới để mở giao diện Trợ lý AI.</li>
+          <li>Sử dụng tài khoản Google để truy cập an toàn.</li>
+          <li>Kéo thả các file văn bản (PDF, DOCX) cần rà soát vào ô chat.</li>
+          <li>Hệ thống AI chuyên gia sẽ tự động quét, đối chiếu và xuất báo cáo.</li>
+       </ol>
+    </div>
+
+    <!-- Dán link chia sẻ Gem của bạn vào biến href="..." -->
+    <a href="https://gemini.google.com/gem/1w4FL_e_wAWF5E-EV7WquoqJGQpF9kw25?usp=sharing" target="_blank" class="btn-gemini">
+       🚀 KHỞI ĐỘNG TRỢ LÝ RÀ SOÁT
+    </a>
+  </div>
+
+</body>
+</html>
