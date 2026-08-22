@@ -13,8 +13,8 @@
     <option value="Dự toán">Dự toán/Khối lượng</option>
   </select>
 
-  <label style="font-weight: bold; display: block; margin-bottom: 5px;">Tải file bản scan (PDF):</label>
-  <input type="file" id="fileInput" accept="application/pdf" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px dashed #ccc; border-radius: 4px; box-sizing: border-box; background: #f9f9f9;">
+ <label style="font-weight: bold; display: block; margin-bottom: 5px;">Tải file (PDF hoặc Word):</label>
+  <input type="file" id="fileInput" accept=".pdf, .docx, .doc, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px dashed #ccc; border-radius: 4px; box-sizing: border-box; background: #f9f9f9;">
 
   <button onclick="uploadToGemini()" id="submitBtn" style="width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">Bắt đầu kiểm tra</button>
   
@@ -38,9 +38,19 @@
     }
 
     const file = fileInput.files[0];
-    // Kiểm tra dung lượng (khuyên dùng dưới 15MB để không vượt quá giới hạn payload của Apps Script)
-    if (file.size > 15 * 1024 * 1024) {
-      alert("File quá lớn! Vui lòng nén file PDF xuống dưới 15MB.");
+    
+    // Hệ thống tự động lấy định dạng file (ví dụ: application/pdf hoặc application/vnd.openxmlformats-...)
+    let mimeType = file.type;
+    
+    // Mẹo nhỏ: Đề phòng trình duyệt không nhận diện được file DOCX
+    if (!mimeType) {
+      if (file.name.endsWith('.docx')) mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      else if (file.name.endsWith('.doc')) mimeType = 'application/msword';
+      else if (file.name.endsWith('.pdf')) mimeType = 'application/pdf';
+    }
+
+    if (!mimeType) {
+      alert("Không nhận diện được định dạng file, vui lòng thử lại!");
       return;
     }
 
@@ -50,14 +60,15 @@
       const base64Data = e.target.result;
       
       statusMsg.style.color = "#0056b3";
-      statusMsg.innerHTML = "⏳ Đang phân tích hồ sơ qua Gemini...<br><small>Quá trình này có thể mất 30-60 giây tùy độ dài trang.</small>";
+      statusMsg.innerHTML = "⏳ Đang phân tích hồ sơ qua Gemini 2.5...";
       btn.disabled = true;
-      btn.style.background = "#ccc";
 
+      // Đóng gói thêm biến mimeType vào payload để gửi đi
       const payload = {
         email: email,
         loaiHoSo: loaiHoSo,
         fileName: file.name,
+        mimeType: mimeType, 
         fileBase64: base64Data
       };
 
