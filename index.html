@@ -13,12 +13,13 @@
     background-color: #f4f7f6;
   }
   
-  /* Cấu hình Header Banner Xanh Dương (Mô phỏng 100% theo ảnh của bạn) */
+  /* Cấu hình Header Banner Xanh Dương kèm VIỀN VÀNG */
   .header-banner {
-    background-color: #0056b3; /* Màu xanh dương chuẩn doanh nghiệp */
+    background-color: #0056b3; 
     color: white;
     padding: 15px 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-bottom: 4px solid #ffcc00; /* Viền vàng đặc trưng */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
   
   .header-banner .corp-name {
@@ -36,12 +37,12 @@
   
   .header-banner .department {
     font-size: 13px;
-    color: #e0e0e0; /* Chữ màu xám trắng để phân cấp thông tin */
+    color: #e0e0e0; 
   }
 
-  /* Khung nội dung chính nằm giữa trang */
+  /* Khung nội dung chính */
   .main-content {
-    max-width: 700px;
+    max-width: 800px;
     margin: 40px auto;
     padding: 35px;
     background: #fff;
@@ -50,65 +51,102 @@
     text-align: center;
   }
 
-  /* Nút bấm lớn chuyển hướng qua Gemini */
-  .btn-gemini {
-    display: inline-block;
-    padding: 15px 35px;
-    background-color: #0056b3;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: background-color 0.3s;
-    margin-top: 15px;
-  }
-  
-  .btn-gemini:hover {
-    background-color: #004494; /* Hiệu ứng đổi màu khi rê chuột */
-  }
-
   /* Khung hướng dẫn sử dụng */
   .guide-box {
     background-color: #f8f9fa; 
-    border-left: 4px solid #28a745; /* Vạch xanh lá cây trang trí */
+    border-left: 4px solid #28a745; 
     padding: 15px 20px; 
     text-align: left; 
     margin: 25px 0;
   }
+
+  /* --- KHU VỰC CÁC NÚT TRỢ LÝ --- */
+  .assistant-container {
+    display: flex;
+    flex-wrap: wrap; /* Tự động rớt dòng nếu màn hình nhỏ */
+    gap: 15px; /* Khoảng cách giữa các nút */
+    justify-content: center;
+    margin-top: 25px;
+  }
+
+  .btn-gemini {
+    flex: 1 1 200px; /* Các nút sẽ co giãn đều nhau, độ rộng tối thiểu 200px */
+    display: inline-block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-gemini:hover {
+    transform: translateY(-2px); /* Hiệu ứng nảy lên nhẹ khi rê chuột */
+    box-shadow: 0 5px 8px rgba(0,0,0,0.2);
+  }
+
+  /* Tùy biến màu sắc cho từng loại trợ lý để dễ phân biệt */
+  .btn-phap-ly { background-color: #0056b3; } /* Xanh dương đậm */
+  .btn-phap-ly:hover { background-color: #004494; }
+
+  .btn-ky-thuat { background-color: #d9534f; } /* Đỏ gạch */
+  .btn-ky-thuat:hover { background-color: #c9302c; }
+
+  .btn-du-toan { background-color: #28a745; } /* Xanh lá */
+  .btn-du-toan:hover { background-color: #218838; }
+  
+  .btn-tai-san { background-color: #f0ad4e; color: #333; } /* Cam */
+  .btn-tai-san:hover { background-color: #ec971f; }
+
 </style>
 </head>
 <body>
 
-  <!-- PHẦN 1: HEADER XANH DƯƠNG -->
+  <!-- PHẦN 1: HEADER XANH DƯƠNG (CÓ VIỀN VÀNG) -->
   <div class="header-banner">
     <div class="corp-name">TỔNG CÔNG TY CẢNG HÀNG KHÔNG VIỆT NAM - CTCP</div>
     <div class="airport-name">CẢNG HÀNG KHÔNG QUỐC TẾ CẦN THƠ</div>
     <div class="department">Phòng Tài chính - Kế hoạch | Triển khai văn bản</div>
   </div>
 
-  <!-- PHẦN 2: NỘI DUNG CHÍNH (LANDING PAGE) -->
+  <!-- PHẦN 2: NỘI DUNG CHÍNH -->
   <div class="main-content">
-    <h2 style="color: #333; margin-top: 0;">Cổng Rà Soát Hồ Sơ Nội Bộ (AI)</h2>
+    <h2 style="color: #333; margin-top: 0;">Danh mục Trợ lý AI Nội bộ</h2>
     <p style="color: #555; font-size: 15px; line-height: 1.6; text-align: left;">
-      Hệ thống đã được nâng cấp lên lõi xử lý trực tiếp của Google để đảm bảo năng lực phân tích tệp dữ liệu lớn (Hợp đồng, Bảng tính, Bản vẽ thi công).
+      Vui lòng lựa chọn trợ lý AI phù hợp với nghiệp vụ chuyên môn để hệ thống áp dụng đúng tiêu chuẩn rà soát tài liệu.
     </p>
     
     <div class="guide-box">
        <h4 style="margin-top: 0; color: #333;">Quy trình thực hiện:</h4>
        <ol style="margin-bottom: 0; padding-left: 20px; color: #555; line-height: 1.6;">
-          <li>Bấm vào nút bên dưới để mở giao diện Trợ lý AI.</li>
-          <li>Sử dụng tài khoản Google để truy cập an toàn.</li>
-          <li>Kéo thả các file văn bản (PDF, DOCX) cần rà soát vào ô chat.</li>
-          <li>Hệ thống AI chuyên gia sẽ tự động quét, đối chiếu và xuất báo cáo.</li>
+          <li>Chọn trợ lý đúng với loại hồ sơ cần xử lý bên dưới.</li>
+          <li>Kéo thả các file văn bản (PDF, DOCX) vào ô chat của Google Gemini.</li>
+          <li>Đợi hệ thống tự động quét, đối chiếu và xuất báo cáo nghiệp vụ.</li>
        </ol>
     </div>
 
-    <!-- Dán link chia sẻ Gem của bạn vào biến href="..." -->
-    <a href="https://gemini.google.com/gem/1w4FL_e_wAWF5E-EV7WquoqJGQpF9kw25?usp=sharing" target="_blank" class="btn-gemini">
-       🚀 KHỞI ĐỘNG TRỢ LÝ RÀ SOÁT
-    </a>
+    <!-- PHẦN 3: CÁC NÚT BẤM TRỢ LÝ (DÀN HÀNG NGANG ĐẸP MẮT) -->
+    <div class="assistant-container">
+      <!-- Thay link Gem của bạn vào các thuộc tính href -->
+      <a href="https://gemini.google.com/gem/1w4FL_e_wAWF5E-EV7WquoqJGQpF9kw25?usp=sharing" target="_blank" class="btn-gemini btn-phap-ly">
+         📑 Rà soát HỒ SƠ
+      </a>
+      
+      <a href="https://gemini.google.com/gem/1O_Gm5-ykEM48xUXkiuQCTWOwZrjj0gO9?usp=sharing" target="_blank" class="btn-gemini btn-ky-thuat">
+         🏗️ Kiểm tra BÁO GIÁ
+      </a>
+      
+      <a href="https://gemini.google.com/gem/1KPn6_ZZJDiVn3Fn9zoSke5xSU1Nmn84m?usp=sharing" target="_blank" class="btn-gemini btn-du-toan">
+         📊 Chuyển PDF sang TEXT
+      </a>
+
+      <a href="LINK_GEM_4" target="_blank" class="btn-gemini btn-tai-san">
+         ✈️ Trợ lý Quản lý Tài sản Khu bay
+      </a>
+    </div>
+
   </div>
 
 </body>
